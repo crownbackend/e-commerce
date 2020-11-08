@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "register.title"|trans }}{% endblock %}
+
+{% block body %}
+
+
+    <div class="m-all-150"></div>
+    <div class="container">
+        <h1 class="mtext-111 cl2 p-b-16">
+            {{ "register.title"|trans }}
+        </h1>
+        {{ form_start(form) }}
+
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email) }}
+        {{ form_errors(form.email) }}
+        <br>
+        {{ form_label(form.password) }}
+        {{ form_widget(form.password) }}
+        {{ form_errors(form.password) }}
+        <br>
+        {{ form_label(form.address) }}
+        {{ form_widget(form.address) }}
+        {{ form_errors(form.address) }}
+        <br>
+        {{ form_label(form.city) }}
+        {{ form_widget(form.city) }}
+        {{ form_errors(form.city) }}
+        <br>
+        {{ form_label(form.telephone) }}
+        {{ form_widget(form.telephone) }}
+        {{ form_errors(form.telephone) }}
+        <br>
+        {{ form_label(form.lastName) }}
+        {{ form_widget(form.lastName) }}
+        {{ form_errors(form.lastName) }}
+        <br>
+        {{ form_label(form.firstName) }}
+        {{ form_widget(form.firstName) }}
+        {{ form_errors(form.firstName) }}
+        <br>
+        <button type="submit" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+            {{ "register.title"|trans }}
+        </button>
+        {{ form_end(form) }}
+    </div>
+    <div class="m-all-150"></div>
+{% endblock %}

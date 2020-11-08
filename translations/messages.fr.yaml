@@ -1,0 +1,22 @@
+home: Accueil
+login:
+  login: Connexion
+  email: Mail
+  password: Mot de passe
+register:
+  title: Inscription
+  email: Mail
+  password: Mot de passe
+  address: Adresse
+  city: Ville
+  phone: Numéro de téléphone
+  firstName: Prénom
+  lastName: Nom
+  errors:
+    email: Il y a déjà un compte avec ce courriel
+
+confirm_email:
+  subject: Confirmation de votre compte
+  content: Cliquer ici pour confirmer votre compte !
+  success: Votre compte à bien été activer vous pouvez maintenant vous connecté et terminer votre commande
+  error: Aucun compte à été trouver ou il à déja été activer au par avant

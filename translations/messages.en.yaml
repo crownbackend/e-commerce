@@ -1,0 +1,22 @@
+home: Home
+login:
+  login: Login
+  email: Email
+  password: Password
+register:
+  title: Register
+  email: Email
+  password: Password
+  address: Address
+  city: City
+  phone: Number phone
+  firstName: First Name
+  lastName: Last Name
+  errors:
+    email: There is already an account with this email
+
+confirm_email:
+  subject: Confirm your account
+  content: CLick here to confirm your account !
+  success: Your account has been activated you can now login in and complete your order
+  error: No account has been found or it has already been activated at before
