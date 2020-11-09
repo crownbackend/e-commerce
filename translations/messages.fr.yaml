@@ -13,7 +13,10 @@ register:
   firstName: Prénom
   lastName: Nom
   errors:
-    email: Il y a déjà un compte avec ce courriel
+    email:
+      taken: Il y a déjà un compte avec ce courriel
+      success: Mail valide
+      error: Mail non valide
 
 confirm_email:
   subject: Confirmation de votre compte

@@ -13,7 +13,10 @@ register:
   firstName: First Name
   lastName: Last Name
   errors:
-    email: There is already an account with this email
+    email:
+      taken: There is already an account with this email
+      success: Email valid
+      error: Email not valid
 
 confirm_email:
   subject: Confirm your account

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommandRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,26 @@ class Command
      * @ORM\Column(type="string", length=255)
      */
     private $methodPayement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Facture::class, mappedBy="command", cascade={"persist", "remove"})
+     */
+    private $facture;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="commands")
+     */
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +142,60 @@ class Command
     public function setMethodPayement(string $methodPayement): self
     {
         $this->methodPayement = $methodPayement;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getFacture(): ?Facture
+    {
+        return $this->facture;
+    }
+
+    public function setFacture(?Facture $facture): self
+    {
+        $this->facture = $facture;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newCommand = null === $facture ? null : $this;
+        if ($facture->getCommand() !== $newCommand) {
+            $facture->setCommand($newCommand);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        $this->products->removeElement($product);
 
         return $this;
     }

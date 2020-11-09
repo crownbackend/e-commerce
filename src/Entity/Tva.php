@@ -27,6 +27,11 @@ class Tva
      */
     private $percent;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Product::class, mappedBy="tva", cascade={"persist", "remove"})
+     */
+    private $product;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,24 @@ class Tva
     public function setPercent(string $percent): self
     {
         $this->percent = $percent;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newTva = null === $product ? null : $this;
+        if ($product->getTva() !== $newTva) {
+            $product->setTva($newTva);
+        }
 
         return $this;
     }

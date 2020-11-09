@@ -18,7 +18,7 @@ class RegistrationType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20",
+                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20 email",
                     "placeholder" => ""
                 ],
                 'label' => "register.email",
@@ -29,7 +29,7 @@ class RegistrationType extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'attr' => [
-                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20",
+                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20 password",
                     "placeholder" => ""
                 ],
                 'label' => "register.password",
@@ -51,7 +51,7 @@ class RegistrationType extends AbstractType
             ])
             ->add('city', TextType::class, [
                 'attr' => [
-                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20",
+                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20 city",
                     "placeholder" => ""
                 ],
                 'label' => "register.city",
@@ -62,7 +62,7 @@ class RegistrationType extends AbstractType
             ])
             ->add('telephone', TelType::class, [
                 'attr' => [
-                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20",
+                    'class' => "size-111 bor8 stext-102 cl2 p-lr-20 phone",
                     "placeholder" => ""
                 ],
                 'label' => "register.phone",

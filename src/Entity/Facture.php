@@ -22,6 +22,11 @@ class Facture
      */
     private $reference;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Command::class, inversedBy="facture", cascade={"persist", "remove"})
+     */
+    private $command;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class Facture
     public function setReference(string $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getCommand(): ?Command
+    {
+        return $this->command;
+    }
+
+    public function setCommand(?Command $command): self
+    {
+        $this->command = $command;
 
         return $this;
     }
