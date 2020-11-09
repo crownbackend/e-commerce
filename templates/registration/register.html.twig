@@ -10,16 +10,21 @@
         <h1 class="mtext-111 cl2 p-b-16">
             {{ "register.title"|trans }}
         </h1>
+        <span id="url" data-url-email="{{ path('check_email') }}" data-url-password="{{ path('check_password') }}"></span>
         {{ form_start(form) }}
 
         {{ form_label(form.email) }}
         {{ form_widget(form.email) }}
         {{ form_errors(form.email) }}
-        <div id="email_error" data-url="{{ path('check_email') }}"></div>
+        <div id="email_error"></div>
         <br>
         {{ form_label(form.password) }}
         {{ form_widget(form.password) }}
+        <span style="float: right; cursor: pointer" title="{{ "register.show_password"|trans }}" id="show_password">
+            <i class="fas fa-eye fa-2x"></i>
+        </span>
         {{ form_errors(form.password) }}
+        <div id="password_error"></div>
         <br>
         {{ form_label(form.address) }}
         {{ form_widget(form.address) }}

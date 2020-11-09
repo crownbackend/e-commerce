@@ -36,6 +36,10 @@ class User implements UserInterface
     private $roles = [];
 
     /**
+     * @Assert\Regex(
+     *     pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,50}$/",
+     *     message="Password not valid !"
+     * )
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
@@ -100,6 +104,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Command::class, mappedBy="user")
      */
     private $commandes;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastLogin;
 
     public function __construct()
     {
@@ -352,6 +361,18 @@ class User implements UserInterface
                 $commande->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
 
         return $this;
     }

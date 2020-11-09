@@ -71,7 +71,8 @@ class RegisterController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
             $this->mailer->sendEmail($user->getEmail(), $user->getConfirmToken());
-            $this->addFlash("success", "Inscription réussie !");
+            $this->addFlash("success", "register.success");
+            return $this->redirectToRoute('app_login');
         }
         return $this->render('registration/register.html.twig', [
             'form' => $form->createView()
@@ -117,6 +118,27 @@ class RegisterController extends AbstractController
                 }
                 return $this->json(['error' => 0, 'message' => $this->translator->trans('register.errors.email.error')]);
             }
+        } else {
+            return $this->json(['error' => 'not found']);
+        }
+    }
+
+    /**
+     * @Route("/check/password/validate", name="check_password")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkPassword(Request $request): JsonResponse
+    {
+        if($request->isXmlHttpRequest()) {
+            $pattern = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,50}$';
+            if(preg_match("/$pattern/", $request->request->get('password'))) {
+                return $this->json(['success' => 1, "message" => $this->translator->trans('register.errors.password.success')]);
+            } else {
+                return $this->json(['error' => 0, "message" => $this->translator->trans('register.errors.password.error')]);
+            }
+        } else {
+            return $this->json(['error' => 'not found']);
         }
     }
 

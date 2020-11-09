@@ -4,19 +4,24 @@ login:
   email: Mail
   password: Mot de passe
 register:
+  show_password: Voir le mot de passe
   title: Inscription
-  email: Mail
-  password: Mot de passe
-  address: Adresse
-  city: Ville
-  phone: Numéro de téléphone
-  firstName: Prénom
-  lastName: Nom
+  email: Mail*
+  password: Mot de passe*
+  address: Adresse*
+  city: Ville*
+  phone: Numéro de téléphone*
+  firstName: Prénom*
+  lastName: Nom*
+  success: Inscription réussie ! un email de confirmation va vous être envoyer
   errors:
     email:
       taken: Il y a déjà un compte avec ce courriel
       success: Mail valide
       error: Mail non valide
+    password:
+      success: Mot de passe valide
+      error: Mot de passe non valide (il faut minimum 8 caractrès, une majuscule, une minisucle, un chiffre et un caractrès spéciale)
 
 confirm_email:
   subject: Confirmation de votre compte

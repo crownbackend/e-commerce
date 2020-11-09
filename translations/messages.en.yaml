@@ -4,19 +4,24 @@ login:
   email: Email
   password: Password
 register:
-  title: Register
-  email: Email
-  password: Password
-  address: Address
-  city: City
-  phone: Number phone
-  firstName: First Name
-  lastName: Last Name
+  show_password: Show password
+  title: Register*
+  email: Email*
+  password: Password*
+  address: Address*
+  city: City*
+  phone: Number phone*
+  firstName: First Name*
+  lastName: Last Name*
+  success: Success register ! a confirmation email will be sent to you
   errors:
     email:
       taken: There is already an account with this email
       success: Email valid
       error: Email not valid
+    password:
+      success: Password good
+      error: Invalid password (minimum 8 characters, one uppercase, one minisucle, one digit and one special character are required)
 
 confirm_email:
   subject: Confirm your account
