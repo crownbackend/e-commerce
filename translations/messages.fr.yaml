@@ -28,6 +28,7 @@ confirm_email:
   content: Cliquer ici pour confirmer votre compte !
   success: Votre compte à bien été activer vous pouvez maintenant vous connecté et terminer votre commande
   error: Aucun compte à été trouver ou il à déja été activer au par avant
+  activate: Votre compte na pas encore été activer
 
 forget_password:
   title: Pour renouvelez votre mot de passe veuillez indiqué votre mail
