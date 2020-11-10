@@ -28,6 +28,7 @@ confirm_email:
   content: CLick here to confirm your account !
   success: Your account has been activated you can now login in and complete your order
   error: No account has been found or it has already been activated at before
+  activate: Your account has not been activated
 
 forget_password:
   title: To renew your password please enter your email address
