@@ -28,3 +28,15 @@ confirm_email:
   content: CLick here to confirm your account !
   success: Your account has been activated you can now login in and complete your order
   error: No account has been found or it has already been activated at before
+
+forget_password:
+  title: To renew your password please enter your email address
+  password: Password forget
+  error: Your account does not exist
+  success: An email containing a link to renew your password has been sent
+  confirm_password: To retrieve your password please click here
+  reset:
+    title: Please enter your new password!
+    password: Recover your password
+    button: Send
+    success: Password change
