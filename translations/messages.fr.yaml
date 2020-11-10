@@ -28,3 +28,15 @@ confirm_email:
   content: Cliquer ici pour confirmer votre compte !
   success: Votre compte à bien été activer vous pouvez maintenant vous connecté et terminer votre commande
   error: Aucun compte à été trouver ou il à déja été activer au par avant
+
+forget_password:
+  title: Pour renouvelez votre mot de passe veuillez indiqué votre mail
+  password: Mot de passe oublié
+  error: "votre compte n'éxiste pas"
+  success: Un mail contenant un lien pour renouvelez votre mot de passe à été envoyer
+  confirm_password: Pour récupérer votre mot de passe veuillez cliquer ici
+  reset:
+    title: Veuillez entré votre nouveau mot de passe !
+    password: Récupérer votre mot de passe
+    button: Envoyer
+    success: Mot de passe modifié

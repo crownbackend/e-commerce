@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\PasswordForgetType;
 use App\Form\RegistrationType;
+use App\Form\ResetPasswordType;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,7 +72,7 @@ class RegisterController extends AbstractController
             $user->setConfirmToken($this->generateToken());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $this->mailer->sendEmail($user->getEmail(), $user->getConfirmToken());
+            $this->mailer->sendEmail($user->getEmail(), $user->getConfirmToken(), 'registration');
             $this->addFlash("success", "register.success");
             return $this->redirectToRoute('app_login');
         }
@@ -98,6 +100,59 @@ class RegisterController extends AbstractController
             $this->addFlash('error', 'confirm_email.error');
             return $this->redirectToRoute('redirect_locale');
         }
+    }
+
+    /**
+     * @Route("/paswword/forget", name="password_forget")
+     * @param Request $request
+     * @return Response
+     */
+    public function passwordForget(Request $request): Response
+    {
+        $form = $this->createForm(PasswordForgetType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user = $this->userRepository->findOneBy(['email' => $form->get('password')->getData()]);
+            if($user) {
+                $user->setPasswordToken($this->generateToken());
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+                $this->mailer->sendEmail($user->getEmail(), $user->getPasswordToken(), 'forget-password');
+                $this->addFlash('success', 'forget_password.success');
+                return $this->redirectToRoute('home');
+            } else {
+                $this->addFlash('error', 'forget_password.error');
+            }
+        }
+        return $this->render('registration/password-forget.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/account/password/confirm/{token}", name="confirm_password")
+     * @param string $token
+     */
+    public function confirmPassword(string $token, Request $request)
+    {
+        $user = $this->userRepository->findOneBy(['passwordToken' => $token]);
+        if(!$user) {
+            return $this->redirectToRoute('home');
+        }
+        $form = $this->createForm(ResetPasswordType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user->setPasswordToken(null);
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $form->get('password')->getData()));
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'forget_password.reset.success');
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render("registration/reset-password.html.twig", [
+            'form' => $form->createView()
+        ]);
     }
 
     /**

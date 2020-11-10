@@ -21,11 +21,8 @@ $(document).ready(function() {
                     email.html(data.message)
                 }
             },
-            error: function (data) {
-                if(data.status === 500 || data.status === 404)
-                {
-                    alert('Error server')
-                }
+            error: function () {
+                alert('Error server')
             }
         })
     })
@@ -47,8 +44,8 @@ $(document).ready(function() {
                     password.html(data.message)
                 }
             },
-            error: function (data) {
-                console.log(data)
+            error: function () {
+                alert('Error server')
             }
         })
     })

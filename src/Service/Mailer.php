@@ -28,7 +28,7 @@ class Mailer {
      * @param $token
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function sendEmail($email, $token)
+    public function sendEmail($email, $token, $template)
     {
         $email = (new TemplatedEmail())
             ->from('resgister@shop.com')
@@ -36,7 +36,7 @@ class Mailer {
             ->subject($this->translator->trans("confirm_email.subject"))
 
             // path of the Twig template to render
-            ->htmlTemplate('emails/registration.html.twig')
+            ->htmlTemplate('emails/'.$template.'.html.twig')
 
             // pass variables (name => value) to the template
             ->context([
