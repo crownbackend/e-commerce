@@ -1,4 +1,3 @@
-home: Home
 login:
   login: Login
   email: Email
@@ -41,3 +40,16 @@ forget_password:
     password: Recover your password
     button: Send
     success: Password change
+
+header:
+  account: My account
+  home: Home
+  shop: Shop
+  promo: Promotion
+  categories: Categories
+  about: About
+  contact: Contact
+  language: Language
+  order: Track Order
+  wishlist: My Wishlist
+  other: Other

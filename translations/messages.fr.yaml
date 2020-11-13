@@ -1,4 +1,3 @@
-home: Accueil
 login:
   login: Connexion
   email: Mail
@@ -41,3 +40,17 @@ forget_password:
     password: Récupérer votre mot de passe
     button: Envoyer
     success: Mot de passe modifié
+
+
+header:
+  account: Mon compte
+  home: Accueil
+  shop: Boutique
+  promo: Promotion
+  categories: Catégories
+  about: En savoir plus
+  contact: Contactez-nous
+  language: Langue
+  order: Suivre une commande
+  wishlist: Ma liste de souhaits
+  other: Autres
