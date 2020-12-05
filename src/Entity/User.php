@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface
 {
     /**
+     * @Groups({"users", "user"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -24,6 +26,7 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Groups({"users", "user"})
      * @Assert\NotBlank()
      * @Assert\Email()
      * @ORM\Column(type="string", length=180, unique=true)
@@ -46,28 +49,33 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Groups({"users", "user"})
      * @ORM\Column(type="boolean")
      */
     private $enabled;
 
     /**
+     * @Groups({"users", "user"})
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
+     * @Groups({"user"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $address;
 
     /**
+     * @Groups({"user"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $city;
 
     /**
+     * @Groups({"user"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
@@ -84,28 +92,33 @@ class User implements UserInterface
     private $passwordToken;
 
     /**
+     * @Groups({"users", "user"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
 
     /**
+     * @Groups({"users", "user"})
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $lastName;
 
     /**
+     * @Groups({"user"})
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
      */
     private $comments;
 
     /**
+     * @Groups({"users", "user"})
      * @ORM\OneToMany(targetEntity=Command::class, mappedBy="user")
      */
     private $commandes;
 
     /**
+     * @Groups({"users", "user"})
      * @ORM\Column(type="date", nullable=true)
      */
     private $lastLogin;

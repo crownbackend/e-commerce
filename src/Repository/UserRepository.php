@@ -36,32 +36,59 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByUsers($role, $filter = null)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"'.$role.'"%');
+        if($filter == 1) {
+            $query->orderBy("u.createdAt", "DESC")
+                ->setMaxResults(10);
+        } else if($filter == 2) {
+            $query->orderBy("u.lastLogin", "DESC")
+                ->setMaxResults(10);
+        }
+        return $query->getQuery()->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    public function findByUsersByLoadMore($filter, $date, $role)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $query = $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"'.$role.'"%');
+        if($filter == 1) {
+            $query->andWhere("u.createdAt < :date")
+            ->setParameter("date", $date)
+            ->orderBy("u.createdAt", "DESC")
+            ->setMaxResults(10);
+        } else if($filter == 2) {
+            $query->andWhere("u.lastLogin < :date")
+                ->setParameter("date", $date)
+                ->orderBy("u.lastLogin", "DESC")
+                ->setMaxResults(10);
+        }
+        return $query->getQuery()->getResult();
     }
-    */
+
+    public function findSearchByUser($search)
+    {
+        return $this->createQueryBuilder("u")
+            ->orWhere('u.email LIKE :email')
+            ->orWhere('u.lastName LIKE :lastName')
+            ->orWhere('u.firstName LIKE :firstName')
+            ->setParameters(['email' => "%$search%", 'lastName' => "%$search%",
+                'firstName' => "%$search%"])
+            ->orderBy("u.createdAt", "DESC")
+            ->getQuery()->getResult();
+    }
+
+    public function findByUserCount($role)
+    {
+        return $this->createQueryBuilder("u")
+            ->select("count(u.id)")
+            ->where('u.roles LIKE :roles')
+            ->setParameter('roles', '%"'.$role.'"%')
+            ->getQuery()->getSingleResult();
+
+    }
 }
