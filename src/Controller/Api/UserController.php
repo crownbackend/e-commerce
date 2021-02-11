@@ -2,11 +2,15 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\User;
+use App\Form\Api\RegistrationApiType;
 use App\Repository\UserRepository;
+use App\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,10 +21,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends AbstractController
 {
     private $userRepository;
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder,
+                                Mailer $mailer)
     {
         $this->userRepository = $userRepository;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -41,6 +56,32 @@ class UserController extends AbstractController
     public function user($id): JsonResponse
     {
         return $this->json($this->userRepository->findOneBy(['id' => $id]), 200, [], ['groups' => "user"]);
+    }
+
+    /**
+     * @Route("/", name="create_user", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
+    public function createUser(Request $request): JsonResponse
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationApiType::class, $user);
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $this->generatePasswordRandom(10)));
+            $user->setPasswordToken($this->generateToken());
+            $user->setConfirmToken($this->generateToken());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->mailer->sendEmail($user->getEmail(), $user->getConfirmToken(), 'registration');
+            $this->mailer->sendEmail($user->getEmail(), $user->getPasswordToken(), 'forget-password');
+            return $this->json(['created' => 1], 201);
+        }
+        return $this->json($form->getErrors(), 400);
     }
 
     /**
@@ -90,5 +131,22 @@ class UserController extends AbstractController
     {
         $users = $this->userRepository->findSearchByUser($request->request->get('search'));
         return $this->json($users, 200, [], ['groups' => "users"]);
+    }
+    private function generatePasswordRandom($nb_car, $chaine = 'azertyuiopqsdfghjklmwxcvbn123456789')
+    {
+        $nb_lettres = strlen($chaine) - 1;
+        $generation = '';
+        for($i=0; $i < $nb_car; $i++)
+        {
+            $pos = mt_rand(0, $nb_lettres);
+            $car = $chaine[$pos];
+            $generation .= $car;
+        }
+        return $generation;
+    }
+
+    private function generateToken()
+    {
+        return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
 }

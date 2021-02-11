@@ -26,6 +26,7 @@ class Mailer {
     /**op
      * @param $email
      * @param $token
+     * @param $template
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function sendEmail($email, $token, $template)
