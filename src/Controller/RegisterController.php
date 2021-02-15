@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\PasswordForgetType;
-use App\Form\RegistrationApiType;
+use App\Form\Api\RegistrationApiType;
 use App\Form\ResetPasswordType;
 use App\Repository\UserRepository;
 use App\Service\Mailer;

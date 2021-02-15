@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/api/users")
@@ -29,13 +30,18 @@ class UserController extends AbstractController
      * @var Mailer
      */
     private $mailer;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder,
-                                Mailer $mailer)
+                                Mailer $mailer, TranslatorInterface $translator)
     {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->mailer = $mailer;
+        $this->translator = $translator;
     }
 
     /**
@@ -143,6 +149,25 @@ class UserController extends AbstractController
             $generation .= $car;
         }
         return $generation;
+    }
+
+    /**
+     * @Route("/check/email/validate", name="check_email_validate", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkEmail(Request $request): JsonResponse
+    {
+        $email = $request->request->get('email');
+        $user = $this->userRepository->findOneBy(['email' => $email]);
+        if($user) {
+            return $this->json(['taken' => 1, 'message' => $this->translator->trans('register.errors.email.taken')]);
+        } else {
+            if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return $this->json(['success' => 1, 'message' => $this->translator->trans('register.errors.email.success')]);
+            }
+            return $this->json(['error' => 0, 'message' => $this->translator->trans('register.errors.email.error')]);
+        }
     }
 
     private function generateToken()
