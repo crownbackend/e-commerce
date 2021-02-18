@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -34,14 +35,19 @@ class UserController extends AbstractController
      * @var TranslatorInterface
      */
     private $translator;
+    /**
+     * @var HttpClientInterface
+     */
+    private $client;
 
     public function __construct(UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder,
-                                Mailer $mailer, TranslatorInterface $translator)
+                                Mailer $mailer, TranslatorInterface $translator, HttpClientInterface $client)
     {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->mailer = $mailer;
         $this->translator = $translator;
+        $this->client = $client;
     }
 
     /**
@@ -138,18 +144,6 @@ class UserController extends AbstractController
         $users = $this->userRepository->findSearchByUser($request->request->get('search'));
         return $this->json($users, 200, [], ['groups' => "users"]);
     }
-    private function generatePasswordRandom($nb_car, $chaine = 'azertyuiopqsdfghjklmwxcvbn123456789')
-    {
-        $nb_lettres = strlen($chaine) - 1;
-        $generation = '';
-        for($i=0; $i < $nb_car; $i++)
-        {
-            $pos = mt_rand(0, $nb_lettres);
-            $car = $chaine[$pos];
-            $generation .= $car;
-        }
-        return $generation;
-    }
 
     /**
      * @Route("/check/email/validate", name="check_email_validate", methods={"POST"})
@@ -170,8 +164,42 @@ class UserController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/check/address/{address}", name="check_address", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function checkAddress(string $address): JsonResponse
+    {
+        if($address) {
+            $response = $this->client->request(
+                'GET',
+                $this->getParameter("api_address_gouv").$address
+            );
+
+            $data = json_decode($response->getContent(), true);
+
+            return $this->json($data);
+        } else {
+            return $this->json("not address get");
+        }
+
+    }
+
     private function generateToken()
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+    }
+
+    private function generatePasswordRandom($nb_car, $chaine = 'azertyuiopqsdfghjklmwxcvbn123456789')
+    {
+        $nb_lettres = strlen($chaine) - 1;
+        $generation = '';
+        for($i=0; $i < $nb_car; $i++)
+        {
+            $pos = mt_rand(0, $nb_lettres);
+            $car = $chaine[$pos];
+            $generation .= $car;
+        }
+        return $generation;
     }
 }

@@ -6,6 +6,7 @@
 parameters:
     locale: 'fr'
     app_locales: en|fr
+    api_address_gouv: '%env(API_ADDRESS_GOUV)%'
 
 services:
     # default configuration for services in *this* file
