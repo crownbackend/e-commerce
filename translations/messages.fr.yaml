@@ -2,6 +2,7 @@ login:
   login: Connexion
   email: Mail
   password: Mot de passe
+  register: Nouveau client ?
 register:
   show_password: Voir le mot de passe
   title: Inscription
@@ -45,6 +46,7 @@ forget_password:
 
 header:
   account: Mon compte
+  register: Inscription
   home: Accueil
   shop: Boutique
   promo: Promotion

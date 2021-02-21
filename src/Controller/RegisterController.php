@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\PasswordForgetType;
-use App\Form\Api\RegistrationApiType;
+use App\Form\RegistrationType;
 use App\Form\ResetPasswordType;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
@@ -65,7 +65,7 @@ class RegisterController extends AbstractController
     public function register(Request $request): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationApiType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($this->passwordEncoder->encodePassword($user, $form->get('password')->getData()));

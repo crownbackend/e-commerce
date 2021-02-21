@@ -2,6 +2,7 @@ login:
   login: Login
   email: Email
   password: Password
+  register: New client ?
 register:
   show_password: Show password
   title: Register*
@@ -44,6 +45,7 @@ forget_password:
 
 header:
   account: My account
+  register: Registration
   home: Home
   shop: Shop
   promo: Promotion
