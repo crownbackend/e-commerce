@@ -12,29 +12,25 @@ class Mailer {
      * @var MailerInterface
      */
     private $mailer;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
-    public function __construct(MailerInterface $mailer, TranslatorInterface $translator)
+    public function __construct(MailerInterface $mailer)
     {
         $this->mailer = $mailer;
-        $this->translator = $translator;
     }
 
     /**op
-     * @param $email
-     * @param $token
-     * @param $template
+     * @param string $email
+     * @param string $token
+     * @param string $template
+     * @param string $subject
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function sendEmail($email, $token, $template)
+    public function sendEmail(string $email, string $token, string $template, string $subject)
     {
         $email = (new TemplatedEmail())
             ->from('resgister@shop.com')
             ->to(new Address($email))
-            ->subject($this->translator->trans("confirm_email.subject"))
+            ->subject($subject)
 
             // path of the Twig template to render
             ->htmlTemplate('emails/'.$template.'.html.twig')

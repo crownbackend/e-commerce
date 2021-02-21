@@ -30,6 +30,7 @@ confirm_email:
   activate: Votre compte na pas encore été activer
 
 forget_password:
+  subject: Renouvellement de votre mot de passe
   title: Pour renouvelez votre mot de passe veuillez indiqué votre mail
   password: Mot de passe oublié
   error: "votre compte n'éxiste pas"

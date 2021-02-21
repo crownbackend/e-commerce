@@ -76,7 +76,7 @@ class UserController extends AbstractController
      * @return JsonResponse
      * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
-    public function createUser(Request $request): JsonResponse
+    public function create(Request $request): JsonResponse
     {
         $user = new User();
         $form = $this->createForm(RegistrationApiType::class, $user);
@@ -89,8 +89,8 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $this->mailer->sendEmail($user->getEmail(), $user->getConfirmToken(), 'registration');
-            $this->mailer->sendEmail($user->getEmail(), $user->getPasswordToken(), 'forget-password');
+            $this->mailer->sendEmail($user->getEmail(), $user->getConfirmToken(), 'registration', $this->translator->trans('confirm_email.subject'));
+            $this->mailer->sendEmail($user->getEmail(), $user->getPasswordToken(), 'forget-password', $this->translator->trans('forget_password.subject'));
             return $this->json(['created' => 1], 201);
         }
         return $this->json($form->getErrors(), 400);
@@ -101,7 +101,7 @@ class UserController extends AbstractController
      * @param $id
      * @return JsonResponse
      */
-    public function editUser($id, Request $request, ValidatorInterface $validator): JsonResponse
+    public function edit($id, Request $request, ValidatorInterface $validator): JsonResponse
     {
         $user = $this->userRepository->findOneBy(["id" => $id]);
         $user->setLastName($request->request->get('lastName'));
@@ -121,6 +121,17 @@ class UserController extends AbstractController
         $em->persist($user);
         $em->flush();
         return $this->json(['id' => $user->getId()]);
+    }
+
+    /**
+     * @Route("/user/{id}/delete", name="delete_user", methods={"DELETE"})
+     */
+    public function delete(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+        return $this->json([], 204);
     }
 
     /**

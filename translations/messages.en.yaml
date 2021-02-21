@@ -30,6 +30,7 @@ confirm_email:
   activate: Your account has not been activated
 
 forget_password:
+  subject: Reset your password
   title: To renew your password please enter your email address
   password: Password forget
   error: Your account does not exist
