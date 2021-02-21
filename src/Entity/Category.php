@@ -44,6 +44,16 @@ class Category
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="string", length=230)
+     */
+    private $metaDescription;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -128,6 +138,30 @@ class Category
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
+    public function setMetaDescription(string $metaDescription): self
+    {
+        $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

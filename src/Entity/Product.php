@@ -89,6 +89,16 @@ class Product
      */
     private $commands;
 
+    /**
+     * @ORM\Column(type="string", length=230)
+     */
+    private $metaDescription;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeProduct::class, inversedBy="products")
+     */
+    private $type;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -316,6 +326,30 @@ class Product
         if ($this->commands->removeElement($command)) {
             $command->removeProduct($this);
         }
+
+        return $this;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
+    public function setMetaDescription(string $metaDescription): self
+    {
+        $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    public function getType(): ?TypeProduct
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeProduct $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
