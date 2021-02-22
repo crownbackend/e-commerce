@@ -25,12 +25,12 @@ class TypeProduct
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=TypeContent::class, mappedBy="typeProduct")
+     * @ORM\OneToMany(targetEntity=TypeContent::class, mappedBy="typeProduct", cascade={"persist"})
      */
     private $contents;
 
     /**
-     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="type")
+     * @ORM\ManyToMany(targetEntity=Product::class, mappedBy="type")
      */
     private $products;
 
@@ -99,7 +99,7 @@ class TypeProduct
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->setType($this);
+            $product->addType($this);
         }
 
         return $this;
@@ -108,10 +108,7 @@ class TypeProduct
     public function removeProduct(Product $product): self
     {
         if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getType() === $this) {
-                $product->setType(null);
-            }
+            $product->removeType($this);
         }
 
         return $this;

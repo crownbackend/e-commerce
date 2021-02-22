@@ -95,7 +95,7 @@ class Product
     private $metaDescription;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypeProduct::class, inversedBy="products")
+     * @ORM\ManyToMany(targetEntity=TypeProduct::class, inversedBy="products")
      */
     private $type;
 
@@ -104,6 +104,7 @@ class Product
         $this->images = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->commands = new ArrayCollection();
+        $this->type = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -342,14 +343,26 @@ class Product
         return $this;
     }
 
-    public function getType(): ?TypeProduct
+    /**
+     * @return Collection|TypeProduct[]
+     */
+    public function getType(): Collection
     {
         return $this->type;
     }
 
-    public function setType(?TypeProduct $type): self
+    public function addType(TypeProduct $type): self
     {
-        $this->type = $type;
+        if (!$this->type->contains($type)) {
+            $this->type[] = $type;
+        }
+
+        return $this;
+    }
+
+    public function removeType(TypeProduct $type): self
+    {
+        $this->type->removeElement($type);
 
         return $this;
     }

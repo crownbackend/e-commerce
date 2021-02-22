@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Form\Api\RegistrationApiType;
+use App\Form\Api\RegistrationType;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,7 +79,7 @@ class UserController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $user = new User();
-        $form = $this->createForm(RegistrationApiType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user);
         $data = json_decode($request->getContent(), true);
         $form->submit($data);
         if($form->isSubmitted() && $form->isValid()) {
